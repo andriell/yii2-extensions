@@ -1,0 +1,5 @@
+Как скрыть колонку из таблицы, но оставить ее для редактирования?
+В colModel прописать 'hidden' => true, 'editrules' => ['edithidden' => true],
+
+Как добавить датапикер для колонки ?
+В colModel прописать 'edittype' => 'text', 'editoptions' => ['dataInit' => JqJson::addJs('jqGridDateTime')]
