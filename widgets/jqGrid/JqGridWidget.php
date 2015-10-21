@@ -27,7 +27,7 @@ class JqGridWidget extends Widget
 
     public $gridDefault = [
         'width' => 'auto',
-        'height' => 'auto',
+        'height' => 350,
         'rowNum' => 20,
     ];
     public $navParamDefault = [
@@ -48,7 +48,16 @@ class JqGridWidget extends Widget
     public $navViewDefault = [];
 
     // Фильтры над колонками
-    public $filterToolbar = true;
+    public $filterToolbar = [
+        'searchOperators' => true,
+    ];
+    // Изменение размеров таблицы
+    public $gridResize = [
+        'minWidth' => 350,
+        'minHeight' => 80,
+        //'maxWidth' => 800,
+        //'maxHeight' => 800,
+    ];
 
     public function init()
     {
@@ -84,7 +93,8 @@ class JqGridWidget extends Widget
      * @param bool $default
      * @return bool
      */
-    public function getNavParam($name, $default = false) {
+    public function getNavParam($name, $default = false)
+    {
         return isset($this->navParam[$name]) ? $this->navParam[$name] : $default;
     }
 }

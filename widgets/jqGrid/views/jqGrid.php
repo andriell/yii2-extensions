@@ -45,7 +45,10 @@ $context = $this->context;
             // add navigation bar with some built in actions for the grid
             jqGrid.navGrid('#<?php echo $context->idPager ?>', navParam, navEdit, navAdd, navDel, navSearch, navView);
             <?php if ($context->filterToolbar) : ?>
-            jqGrid.jqGrid('filterToolbar',{searchOperators : true});
+            jqGrid.jqGrid('filterToolbar', <?= JqJson::encodeJs($context->filterToolbar) ?>);
+            <?php endif; ?>
+            <?php if ($context->gridResize) : ?>
+            jqGrid.jqGrid('gridResize', <?= JqJson::encodeJs($context->gridResize) ?>);
             <?php endif; ?>
         });
     })(<?php echo $context->jQuery ?>);
