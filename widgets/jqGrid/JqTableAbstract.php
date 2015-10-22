@@ -179,10 +179,15 @@ abstract class JqTableAbstract extends JqGridWidget
      * Получить первичный ключ для поиска из набора данных
      * @param array $post
      * @return BaseActiveRecord
+     * @throws JqException
      */
     private function findOneByPk($post) {
         $pk = $this->getColModel()->getPk($post);
-        return $this->getModel()->findOne($pk);
+        $model = $this->getModel()->findOne($pk);
+        if (! $model instanceof BaseActiveRecord) {
+            throw new JqException('Record not found');
+        }
+        return $model;
     }
 
     /**
@@ -213,6 +218,12 @@ abstract class JqTableAbstract extends JqGridWidget
         return $model;
     }
 
+    /**
+     * @param $get
+     * @param $post
+     * @return array
+     * @throws JqException
+     */
     public function actionAdd($get, $post)
     {
         if (!$this->getNavParam('add', false)) {
@@ -230,10 +241,9 @@ abstract class JqTableAbstract extends JqGridWidget
         $this->trigger(self::EVENT_ADD_BEFORE_SAVE, $event);
         //</editor-fold>
 
-        if ($model->save()) {
-            return [];
-        }
-        return $model->getErrors();
+        $model->save();
+        JqException::throwModel($model);
+        return [];
     }
 
     public function actionEdit($get, $post)
@@ -243,9 +253,6 @@ abstract class JqTableAbstract extends JqGridWidget
         }
         /** @var BaseActiveRecord $model */
         $model = $this->findOneByPk($post);
-        if (! ($model instanceof BaseActiveRecord)) {
-            return [];
-        }
         $model = $this->setEditableAttributes($model, $post, false);
 
         //<editor-fold desc="EVENT_EDIT_BEFORE_SAVE">
@@ -256,10 +263,9 @@ abstract class JqTableAbstract extends JqGridWidget
         $this->trigger(self::EVENT_EDIT_BEFORE_SAVE, $event);
         //</editor-fold>
 
-        if ($model->save()) {
-            return [];
-        }
-        return $model->getErrors();
+        $model->save();
+        JqException::throwModel($model);
+        return [];
     }
 
     public function actionDel($get, $post)
@@ -267,16 +273,18 @@ abstract class JqTableAbstract extends JqGridWidget
         if (!$this->getNavParam('del', false)) {
             return [];
         }
-
-        $one = $this->findOneByPk($post);
-        if ($one instanceof BaseActiveRecord) {
-            $one->delete();
-        }
+        $model = $this->findOneByPk($post);
+        $model->delete();
+        JqException::throwModel($model);
         return [];
     }
 
     public function init()
     {
+        $handler = new JqErrorHandler;
+        \Yii::$app->set('errorHandler', $handler);
+        $handler->register();
+
         $this->config();
         parent::init();
     }

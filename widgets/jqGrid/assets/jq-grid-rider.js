@@ -11,6 +11,11 @@ var jqGridRider = {
         navView.afterclickPgButtons = function(whichbutton, form, rowid) {
             jqGridRider.hideInView($, jqGridOption, form[0]);
         };
+
+        navAdd.errorTextFormat = function (data) {
+            console.info(data);
+            return 'Error: ' + data.responseJSON.message;
+        };
     },
     // Скрывает скрытые поля из детального просмотра
     hideInView: function ($, jqGridOption, form) {
