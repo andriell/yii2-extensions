@@ -12,11 +12,11 @@ var jqGridRider = {
             jqGridRider.hideInView($, jqGridOption, form[0]);
         };
 
-        navEdit.errorTextFormat = jqGridRider.errorTextFormat();
-        navAdd.errorTextFormat = jqGridRider.errorTextFormat();
-        navDel.errorTextFormat = jqGridRider.errorTextFormat();
-        navSearch.errorTextFormat = jqGridRider.errorTextFormat();
-        navView.errorTextFormat = jqGridRider.errorTextFormat();
+        navEdit.errorTextFormat = jqGridRider.errorTextFormat;
+        navAdd.errorTextFormat = jqGridRider.errorTextFormat;
+        navDel.errorTextFormat = jqGridRider.errorTextFormat;
+        navSearch.errorTextFormat = jqGridRider.errorTextFormat;
+        navView.errorTextFormat = jqGridRider.errorTextFormat;
     },
     // Скрывает скрытые поля из детального просмотра
     hideInView: function ($, jqGridOption, form) {
