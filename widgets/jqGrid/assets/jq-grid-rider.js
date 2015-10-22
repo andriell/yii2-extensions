@@ -12,10 +12,11 @@ var jqGridRider = {
             jqGridRider.hideInView($, jqGridOption, form[0]);
         };
 
-        navAdd.errorTextFormat = function (data) {
-            console.info(data);
-            return 'Error: ' + data.responseJSON.message;
-        };
+        navEdit.errorTextFormat = jqGridRider.errorTextFormat();
+        navAdd.errorTextFormat = jqGridRider.errorTextFormat();
+        navDel.errorTextFormat = jqGridRider.errorTextFormat();
+        navSearch.errorTextFormat = jqGridRider.errorTextFormat();
+        navView.errorTextFormat = jqGridRider.errorTextFormat();
     },
     // Скрывает скрытые поля из детального просмотра
     hideInView: function ($, jqGridOption, form) {
@@ -28,6 +29,13 @@ var jqGridRider = {
                 $('tr#trv_' + jqGridOption.colModel[i].name, form).hide();
             }
         }
+    },
+    // Форматирмирует сообщения об ошибках
+    errorTextFormat: function (data) {
+        if ('responseJSON' in data && 'message' in data.responseJSON) {
+            return 'Error: ' + data.responseJSON.message;
+        }
+        return 'Error: See jq-grid-rider.js';
     },
     // Датапикер
     dateTimePicker: function (el) {
